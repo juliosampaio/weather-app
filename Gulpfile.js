@@ -5,6 +5,7 @@
     var concat = require('gulp-concat');
     var connect = require('gulp-connect');
     var sequence = require('run-sequence');
+    var streamqueue = require('streamqueue');
 
     //CONFIGURATIONS
     var config = {
@@ -19,13 +20,17 @@
         },
         files: {
             app: {
-                js: [],
+                js: [
+                    './app/app.js'
+                ],
                 css: [
                     './app/assets/app.css'
                 ]
             },
             vendor: {
                 js: [
+                    './node_modules/angular/angular.min.js',
+                    './node_modules/jquery/dist/jquery.min.js',
                     './node_modules/bootstrap-material-design/dist/js/material.min.js',
                     './node_modules/bootstrap-material-design/dist/js/ripples.min.js'
                 ],
@@ -35,8 +40,14 @@
                 ]
             },
             dist: {
-                js: "vendor.js",
-                css: "vendor.css"
+                vendor: {
+                    js: "vendor.js",
+                    css: "vendor.css"
+                },
+                app: {
+                    js: "app.js",
+                    css: "app.css"
+                }
             }
         }
     };
@@ -45,20 +56,51 @@
      * It concats all the js files
      */
     gulp.task('concat:js', function () {
-        var allJS = config.files.vendor.js.concat(config.files.app.js);
+        sequence('concat:js:vendor', 'concat:js:app');
+    });
+    /**
+     * It concats all vendor JS
+     */
+    gulp.task('concat:js:vendor', function () {
+        var allVendorJS = config.files.vendor.js;
         return gulp
-            .src(allJS)
-            .pipe(concat(config.files.dist.js))
+            .src(allVendorJS)
+            .pipe(concat(config.files.dist.vendor.js))
             .pipe(gulp.dest(config.distFolder.base + config.distFolder.js))
+    });
+    /**
+     * It concats all App JS
+     */
+    gulp.task('concat:js:app', function () {
+        var allAppJS = config.files.app.js;
+        return streamqueue({objectMode: true}, gulp.src(allAppJS))
+            .pipe(concat(config.files.dist.app.js))
+            .pipe(gulp.dest(config.distFolder.base + config.distFolder.js));
     });
     /**
      * It concats all the css files
      */
     gulp.task('concat:css', function () {
-        var allCss = config.files.vendor.css.concat(config.files.app.css);
+        sequence('concat:css:vendor', 'concat:css:app');
+    });
+    /**
+     * It concats all the vendor css files
+     */
+    gulp.task('concat:css:vendor', function () {
+        var allVendorCss = config.files.vendor.css;
         return gulp
-            .src(allCss)
-            .pipe(concat(config.files.dist.css))
+            .src(allVendorCss)
+            .pipe(concat(config.files.dist.vendor.css))
+            .pipe(gulp.dest(config.distFolder.base + config.distFolder.css))
+    });
+    /**
+     * It concats all the app css files
+     */
+    gulp.task('concat:css:app', function () {
+        var allAppCss = config.files.app.css;
+        return gulp
+            .src(allAppCss)
+            .pipe(concat(config.files.dist.app.css))
             .pipe(gulp.dest(config.distFolder.base + config.distFolder.css))
     });
     /**
@@ -96,12 +138,20 @@
      */
     gulp.task('watch', function () {
         gulp.watch(config.files.app.css, ['watch:css']);
+        gulp.watch(config.files.app.js, ['watch:js'])
+        gulp.watch(config.appFolder.base + config.index, ['watch:html']);
     });
     /**
      * Watches all the css
      */
     gulp.task('watch:css', function () {
        sequence('concat:css', 'connect:reload');
+    });
+    /**
+     * Watches all the html
+     */
+    gulp.task('watch:html', function () {
+        sequence('copy', 'connect:reload');
     });
     /**
      * Starts the development task

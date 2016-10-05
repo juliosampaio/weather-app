@@ -13,12 +13,16 @@
   "author": "Julio Sampaio",
   "license": "MIT",
   "dependencies": {
-    "bootstrap-material-design": "^0.5.10"
+    "angular": "^1.5.8",
+    "bootstrap": "^3.3.7",
+    "bootstrap-material-design": "^0.5.10",
+    "jquery": "^3.1.1"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^5.0.0",
-    "run-sequence": "^1.2.2"
+    "run-sequence": "^1.2.2",
+    "streamqueue": "^1.1.1"
   }
 }
