@@ -10,8 +10,17 @@
         $stateProvider
             .state('home', {
                 url: '/home',
-                templateUrl: 'home/home.html',
-                controller: 'Home as home'
+                templateUrl: 'home/home.template.html',
+                controller: 'Home as home',
+                resolve: {
+                    userLocation: function (LocationService, $q) {
+                        var location = $q.defer();
+                        LocationService.getUserLocation().then(function (loc) {
+                            location.resolve(loc);
+                        });
+                        return location.promise;
+                    }
+                }
             });
     }
 })();

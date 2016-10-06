@@ -23,7 +23,7 @@
                 js: [
                     './app/app.js',
                     './app/home/home.module.js',
-                    './app/home/home.js',
+                    './app/home/home.controller.js',
                     './app/location/location.module.js',
                     './app/location/location.service.js'
                 ],
