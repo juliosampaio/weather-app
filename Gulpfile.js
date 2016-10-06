@@ -21,7 +21,11 @@
         files: {
             app: {
                 js: [
-                    './app/app.js'
+                    './app/app.js',
+                    './app/home/home.module.js',
+                    './app/home/home.js',
+                    './app/location/location.module.js',
+                    './app/location/location.service.js'
                 ],
                 css: [
                     './app/assets/app.css'
@@ -29,7 +33,8 @@
             },
             vendor: {
                 js: [
-                    './node_modules/angular/angular.min.js',
+                    './node_modules/angular/angular.js',
+                    './node_modules/angular-ui-router/release/angular-ui-router.js',
                     './node_modules/jquery/dist/jquery.min.js',
                     './node_modules/bootstrap-material-design/dist/js/material.min.js',
                     './node_modules/bootstrap-material-design/dist/js/ripples.min.js'
@@ -106,8 +111,8 @@
     /**
      * Copy files to the dist folder
      */
-    gulp.task('copy', function () {
-        var filesToCopy = [].concat(config.appFolder.base+config.index);
+    gulp.task('copy:html', function () {
+        var filesToCopy = [].concat([config.appFolder.base+config.index, config.appFolder.base + '**/*.html']);
         return gulp
             .src(filesToCopy)
             .pipe(gulp.dest(config.distFolder.base));
@@ -131,7 +136,7 @@
      * Builds the app for production/development
      */
     gulp.task('build', function () {
-        sequence('concat:js', 'concat:css', 'copy');
+        sequence('concat:js', 'concat:css', 'copy:html');
     });
     /**
      * Watches all the app files
@@ -139,7 +144,13 @@
     gulp.task('watch', function () {
         gulp.watch(config.files.app.css, ['watch:css']);
         gulp.watch(config.files.app.js, ['watch:js'])
-        gulp.watch(config.appFolder.base + config.index, ['watch:html']);
+        gulp.watch(config.appFolder.base + '**/*.html', ['watch:html']);
+    });
+    /**
+     * Watches all the css
+     */
+    gulp.task('watch:js', function () {
+        sequence('concat:js', 'connect:reload');
     });
     /**
      * Watches all the css
@@ -151,13 +162,13 @@
      * Watches all the html
      */
     gulp.task('watch:html', function () {
-        sequence('copy', 'connect:reload');
+        sequence('copy:html', 'connect:reload');
     });
     /**
      * Starts the development task
      */
     gulp.task('develop', function () {
-        sequence('concat:js', 'concat:css', 'copy', 'connect', 'watch');
+        sequence('concat:js', 'concat:css', 'copy:html', 'connect', 'watch');
     });
 
 }());
