@@ -1,1 +1,110 @@
-{{home.title}}
+<div class="container">
+    <div class="row wa-main-row">
+        <div class="col-md-6">
+            <div class="well wa-card wa-weather-main-card">
+                <div class="row wa-card-header">
+                    <div class="col-md-8 wa-weather-main-card-city">
+                        <div class="wa-weather-icon">
+                            <img src="http://openweathermap.org/img/w/{{home.weatherData.weather[0].icon}}.png">
+                        </div>
+                        <div class="wa-weather-info">
+                            <div class="wa-city-name">{{home.weatherData.name | round}}</div>
+                            <div class="wa-weather-description">{{home.weatherData.weather[0].description}}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 wa-weather-main-card-temp">
+                        {{home.weatherData.main.temp | round}}° {{home.degreeUnit}}
+                    </div>
+                </div>
+                <div class="row wa-weather-main-card-info">
+                    <div class="col-md-4 wa-weather-info-item" title="Min">
+                        <div class="item-icon"><i class="wi wi-direction-down"></i></div>
+                        <div class="item-value">{{home.weatherData.main.temp_min | round}}°</div>
+                        <div class="item-description">Min</div>
+                    </div>
+                    <div class="col-md-4 wa-weather-info-item" title="Max">
+                        <div class="item-icon"><i class="wi wi-direction-up"></i></div>
+                        <div class="item-value">{{home.weatherData.main.temp_max | round}}°</div>
+                        <div class="item-description">Max</div>
+                    </div>
+                    <div class="col-md-4 wa-weather-info-item" title="Humidity">
+                        <div class="item-icon"><i class="wi wi-humidity"></i></div>
+                        <div class="item-value">{{home.weatherData.main.humidity | round}}%</div>
+                        <div class="item-description">Humidity</div>
+                    </div>
+                </div>
+                <div class="row wa-card-content">
+                    <div class="col-md-12">
+                        <div class="row wa-weather-main-card-info">
+                            <div class="col-md-4 wa-weather-info-item" title="Wind direction">
+                                <div class="item-icon"><i class="wi wi-wind towards-{{home.weatherData.wind.deg | round}}-deg"></i></div>
+                                <div class="item-value">{{home.weatherData.wind.deg | round}}º</div>
+                                <div class="item-description">Wind direction</div>
+                            </div>
+                            <div class="col-md-4 wa-weather-info-item" title="Pressure (hPa)">
+                                <div class="item-icon"><i class="wi wi-barometer"></i></div>
+                                <div class="item-value">{{home.weatherData.main.pressure | round}}</div>
+                                <div class="item-description">Pressure (hPa)</div>
+                            </div>
+                            <div class="col-md-4 wa-weather-info-item" title="Clouds">
+                                <div class="item-icon"><i class="wi wi-cloud"></i></div>
+                                <div class="item-value">{{home.weatherData.clouds.all | round}}%</div>
+                                <div class="item-description">Clouds</div>
+                            </div>
+                        </div>
+                        <div class="row wa-weather-main-card-info">
+                            <div class="col-md-4 wa-weather-info-item" title="Wind speed">
+                                <div class="item-icon"><i class="wi wi-strong-wind"></i></div>
+                                <div class="item-value">{{home.weatherData.wind.speed | round}}</div>
+                                <div class="item-description">Wind speed</div>
+                            </div>
+                            <div class="col-md-4 wa-weather-info-item" title="Atmospheric pressure on the sea level (hPa)">
+                                <div class="item-icon"><i class="wi wi-flood"></i></div>
+                                <div class="item-value">{{home.weatherData.main.sea_level | round}}</div>
+                                <div class="item-description">Pressure (Sea level)</div>
+                            </div>
+                            <div class="col-md-4 wa-weather-info-item" title="Atmospheric pressure on the ground level (hPa)">
+                                <div class="item-icon"><i class="wi wi-dust"></i></div>
+                                <div class="item-value">{{home.weatherData.main.grnd_level | round}}</div>
+                                <div class="item-description">Pressure (Ground level)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="well wa-card">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form>
+                            <div class="form-group">
+                                <label>System of units:</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" data-ng-model="home.systemOfUnits" name="sample1" value="imperial" checked="">
+                                        Imperial
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" data-ng-model="home.systemOfUnits" name="sample1" value="metric">
+                                        Metric
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<weather-app-modal modal-id="popup" title="Please, inform a postcode or country" show="home.showInputDialog" buttons="home.modalButtons">
+    <modal-body>
+        <div class="form-group label-static">
+            <input id="user-location" data-ng-model="home.postCodeOrCountry" type="text" class="form-control" placeholder="Postcode or country">
+            <p id="user-location-error" class="help-block text-danger" data-ng-show="!home.postCodeOrCountry">Please, type a postcode or country</p>
+        </div>
+    </modal-body>
+</weather-app-modal>

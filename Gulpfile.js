@@ -25,7 +25,11 @@
                     './app/home/home.module.js',
                     './app/home/home.controller.js',
                     './app/location/location.module.js',
-                    './app/location/location.service.js'
+                    './app/location/location.service.js',
+                    './app/openweather/openweather.module.js',
+                    './app/openweather/openweather.service.js',
+                    './app/widgets/widgets.module.js',
+                    './app/widgets/modal/modal.directive.js'
                 ],
                 css: [
                     './app/assets/app.css'
@@ -36,12 +40,16 @@
                     './node_modules/angular/angular.js',
                     './node_modules/angular-ui-router/release/angular-ui-router.js',
                     './node_modules/jquery/dist/jquery.min.js',
+                    './node_modules/bootstrap/dist/js/bootstrap.min.js',
                     './node_modules/bootstrap-material-design/dist/js/material.min.js',
                     './node_modules/bootstrap-material-design/dist/js/ripples.min.js'
                 ],
                 css: [
+                    './node_modules/bootstrap/dist/css/bootstrap.min.css',
                     './node_modules/bootstrap-material-design/dist/css/bootstrap-material-design.min.css',
-                    './node_modules/bootstrap-material-design/dist/css/ripples.min.css'
+                    './node_modules/bootstrap-material-design/dist/css/ripples.min.css',
+                    './app/assets/font/weather-icons.min.css',
+                    './app/assets/font/weather-icons-wind.min.css'
                 ]
             },
             dist: {
@@ -118,6 +126,21 @@
             .pipe(gulp.dest(config.distFolder.base));
     });
     /**
+     * Copy the font files to the dist folder
+     */
+    gulp.task('copy:fonts', function () {
+       var filesToCopy = [
+           './app/assets/font/weathericons-regular-webfont.eot',
+           './app/assets/font/weathericons-regular-webfont.svg',
+           './app/assets/font/weathericons-regular-webfont.ttf',
+           './app/assets/font/weathericons-regular-webfont.woff',
+           './app/assets/font/weathericons-regular-webfont.woff2'
+       ];
+        return gulp
+            .src(filesToCopy)
+            .pipe(gulp.dest(config.distFolder.base+config.distFolder.css));
+    });
+    /**
      * Starts the development server
      */
     gulp.task('connect', function () {
@@ -136,7 +159,7 @@
      * Builds the app for production/development
      */
     gulp.task('build', function () {
-        sequence('concat:js', 'concat:css', 'copy:html');
+        sequence('concat:js', 'concat:css', 'copy:html', 'copy:fonts');
     });
     /**
      * Watches all the app files

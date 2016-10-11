@@ -1,0 +1,59 @@
+body {
+    background-color: #1B1B1B !important;
+}
+.wa-main-row {
+    margin-top: 50px;
+}
+.wa-weather-main-card {
+    background-color: #457AD1 !important;
+    color: #fff;
+}
+.wa-card-content {
+    background-color: #4376CA;
+    margin-right: -19px;
+    margin-left: -19px;
+    margin-bottom: -19px;
+    padding-top: 19px;
+}
+.wa-weather-main-card .wa-weather-main-card-city > div {
+    display: inline-block;
+    height: 60px;
+    vertical-align: middle;
+}
+.wa-weather-main-card .wa-weather-main-card-city .wa-weather-info > div {
+    max-width: 140px;
+    font-weight: bolder;
+}
+.wa-weather-main-card .wa-weather-main-card-city .wa-weather-info .wa-city-name {
+    font-size: 20px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+.wa-weather-main-card .wa-weather-main-card-city .wa-weather-info .wa-weather-description {
+    font-size: 17px;
+}
+.wa-weather-main-card .wa-weather-main-card-temp {
+    font-size: 29px;
+    font-weight: bolder;
+    height: 60px;
+}
+.wa-weather-main-card-info .wa-weather-info-item {
+    padding-bottom: 20px;
+}
+.wa-weather-main-card-info .wa-weather-info-item > div{
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: bolder;
+}
+.wa-weather-main-card-info .wa-weather-info-item .item-value {
+    font-size: 17px;
+}
+.wa-weather-main-card-info .wa-weather-info-item .item-icon {
+    font-size: 16px !important;
+}
+.wa-weather-main-card-info .wa-weather-info-item .item-description {
+    display: inline-block;
+    color: #ACC4EB;
+    width: 100%;
+}

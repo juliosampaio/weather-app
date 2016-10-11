@@ -1,5 +1,5 @@
 (function () {
     'use strict';
     angular
-        .module('weather-app.location', []);
+        .module('weather-app.widgets', []);
 })();

@@ -15,7 +15,18 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        './app/**/*.spec.js'
+        './node_modules/angular/angular.js',
+        './node_modules/angular-ui-router/release/angular-ui-router.js',
+        './node_modules/angular-mocks/angular-mocks.js',
+        './app/app.js',
+        './app/home/home.module.js',
+        './app/home/home.controller.js',
+        './app/location/location.module.js',
+        './app/location/location.service.js',
+        './app/openweather/openweather.module.js',
+        './app/openweather/openweather.service.js',
+        './app/**/*.spec.js',
+        './tests-mocks/geolocation.js'
     ],
 
 
