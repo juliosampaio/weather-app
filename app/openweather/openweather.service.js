@@ -6,8 +6,16 @@
 
     function OpenWeatherAPIService($q, $http, OPEN_WEATHER_CONFIG) {
         var service = {
-            requestWeatherByGeoLocation: requestWeatherByGeoLocation
+            requestWeatherByGeoLocation: requestWeatherByGeoLocation,
+            requestWeatherByPostcode: requestWeatherByPostcode
         };
+
+        function requestWeatherByPostcode(userLocation, unit) {
+            var params = [];
+            params.push(['zip', userLocation.postcode+','+userLocation.country['alpha-2']]);
+            params.push(['units', unit]);
+            return requestWeather(params);
+        }
 
         function requestWeatherByGeoLocation(lat, lon, unit) {
             var params = [];

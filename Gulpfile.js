@@ -29,7 +29,9 @@
                     './app/openweather/openweather.module.js',
                     './app/openweather/openweather.service.js',
                     './app/widgets/widgets.module.js',
-                    './app/widgets/modal/modal.directive.js'
+                    './app/widgets/modal/modal.directive.js',
+                    './app/util/util.module.js',
+                    './app/util/util.service.js'
                 ],
                 css: [
                     './app/assets/app.css'
@@ -141,6 +143,15 @@
             .pipe(gulp.dest(config.distFolder.base+config.distFolder.css));
     });
     /**
+     * Copy the json assets
+     */
+    gulp.task('copy:json', function () {
+        var filesToCopy = ['./app/assets/**/*.json'];
+        return gulp
+            .src(filesToCopy)
+            .pipe(gulp.dest(config.distFolder.base));
+    });
+    /**
      * Starts the development server
      */
     gulp.task('connect', function () {
@@ -159,7 +170,7 @@
      * Builds the app for production/development
      */
     gulp.task('build', function () {
-        sequence('concat:js', 'concat:css', 'copy:html', 'copy:fonts');
+        sequence('concat:js', 'concat:css', 'copy:html','copy:json', 'copy:fonts');
     });
     /**
      * Watches all the app files
@@ -191,7 +202,7 @@
      * Starts the development task
      */
     gulp.task('develop', function () {
-        sequence('concat:js', 'concat:css', 'copy:html', 'connect', 'watch');
+        sequence('build', 'connect', 'watch');
     });
 
 }());

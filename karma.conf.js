@@ -25,6 +25,8 @@ module.exports = function(config) {
         './app/location/location.service.js',
         './app/openweather/openweather.module.js',
         './app/openweather/openweather.service.js',
+        './app/util/util.module.js',
+        './app/util/util.service.js',
         './app/**/*.spec.js',
         './tests-mocks/geolocation.js'
     ],

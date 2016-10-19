@@ -27,6 +27,7 @@
 
             scope.$watch('show', function (show) {
                 setModalState(show ? 'show' : 'hide');
+                $.material.init();
             });
 
             function setModalState(value) {

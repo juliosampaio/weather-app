@@ -8,22 +8,25 @@ describe('Home Module', function () {
         $q,
         $httpBackend,
         $window,
+        $scope,
         LocationService,
         OpenWeatherAPIService;
 
-    var APPCONFIG = {UNIT: 'imperial'};
+    var APPCONFIG = {DEFAULT_UNIT: 'imperial'};
 
     beforeEach(angular.mock.module('ui.router'));
     beforeEach(angular.mock.module('weather-app.location'));
     beforeEach(angular.mock.module('weather-app.home'));
     beforeEach(angular.mock.module('weather-app.openweather'));
+    beforeEach(angular.mock.module('weather-app.util'));
 
     beforeEach(inject(function (_$controller_, _$state_, _$rootScope_,  _$injector_, _$q_, _$httpBackend_, _LocationService_, _OpenWeatherAPIService_) {
-        $controller = _$controller_;
         $state = _$state_;
+        $controller = _$controller_;
         $rootScope = _$rootScope_;
         $injector = _$injector_;
         $q = _$q_;
+        $scope = $rootScope.$new();
         $httpBackend = _$httpBackend_;
         LocationService = _LocationService_;
         OpenWeatherAPIService = _OpenWeatherAPIService_;
@@ -31,12 +34,14 @@ describe('Home Module', function () {
     }));
     
     describe('Home State', function () {
+
         it('should respond to home URL', function () {
             expect($state.href('home')).toEqual('#/home');
         });
 
         it('should call the LocationService on home state', function () {
             $httpBackend.whenGET('home/home.template.html').respond('');
+            $httpBackend.whenGET('countries/ISO3166.json').respond([]);
             var mockLocation = null;
             $state.go('home');
             $rootScope.$apply();
@@ -50,7 +55,13 @@ describe('Home Module', function () {
         var HomeController, userLocation = null;
 
         beforeEach(function () {
-            HomeController = $controller('Home', {userLocation: userLocation, APPCONFIG: APPCONFIG});
+            HomeController = $controller('Home', {
+                '$scope': $scope,
+                userLocation: userLocation,
+                OpenWeatherAPIService: OpenWeatherAPIService,
+                APPCONFIG: APPCONFIG,
+                countries: []
+            });
         });
 
         it('should be defined', function () {
@@ -73,16 +84,22 @@ describe('Home Module', function () {
         beforeEach(function () {
             userLocation = {coords: {latitude: -3.8105504, longitude: -38.5947928}};
             spyOn(OpenWeatherAPIService, 'requestWeatherByGeoLocation').and.callThrough();
-            HomeController = $controller('Home', {userLocation: userLocation, APPCONFIG: APPCONFIG});
+            HomeController = $controller('Home', {
+                '$scope': $scope,
+                userLocation: userLocation,
+                OpenWeatherAPIService: OpenWeatherAPIService,
+                APPCONFIG: APPCONFIG,
+                countries: []
+            });
         });
 
         it('should fetch the weather for userLocation', function () {
-            var url = 'http://api.openweathermap.org/data/2.5/weather?lat=-3.8105504&lon=-38.5947928&units=metric&apikey='+API_KEY;
+            var url = 'http://api.openweathermap.org/data/2.5/weather?lat=-3.8105504&lon=-38.5947928&units=imperial&apikey='+API_KEY;
             $httpBackend.whenGET(url).respond(200, FAKE_RESPONSE);
             $httpBackend.flush();
             expect(HomeController.userLocation).toEqual(userLocation);
             expect(OpenWeatherAPIService.requestWeatherByGeoLocation)
-                .toHaveBeenCalledWith(userLocation.coords.latitude, userLocation.coords.longitude, APPCONFIG.UNIT);
+                .toHaveBeenCalledWith(userLocation.coords.latitude, userLocation.coords.longitude, APPCONFIG.DEFAULT_UNIT);
             expect(HomeController.weatherData).toEqual(FAKE_RESPONSE);
         });
     });

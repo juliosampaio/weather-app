@@ -19,6 +19,13 @@
                             location.resolve(loc);
                         });
                         return location.promise;
+                    },
+                    countries: function (UtilService, $q) {
+                        var countries = $q.defer();
+                        UtilService.getISO3166Countries().then(function (list) {
+                            countries.resolve(list.data);
+                        });
+                        return countries.promise;
                     }
                 }
             });

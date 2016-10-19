@@ -4,7 +4,7 @@
         .module('weather-app.home')
         .controller('Home', Home);
     
-    function Home($scope, userLocation, OpenWeatherAPIService, APPCONFIG) {
+    function Home($scope, userLocation, OpenWeatherAPIService, APPCONFIG, countries) {
         var controller = this;
         controller.userLocation = userLocation;
         controller.showInputDialog = (userLocation == null);
@@ -13,10 +13,14 @@
         controller.systemOfUnits = APPCONFIG.DEFAULT_UNIT;
         controller.degreeUnit = (controller.systemOfUnits === 'imperial') ? 'F' : 'C';
         controller.postCodeOrCountry = null;
+        controller.locationType = "postcode";
+        controller.countries = countries;
+        controller.userLocationInput = {country: {"name":"United Kingdom of Great Britain and Northern Ireland","alpha-2":"GB","country-code":"826"}, postcode: null};
         controller.modalButtons = getModalButtons();
 
         $scope.$watch('home.systemOfUnits', function (system) {
             var byGeoLocation = controller.userLocation != null;
+            controller.degreeUnit = (system === 'imperial') ? 'F' : 'C';
             requestWeather(byGeoLocation);
         });
 
@@ -29,7 +33,7 @@
                 title: 'What the weather is like?',
                 classes: 'btn btn-primary',
                 click: function () {
-                    if (controller.postCodeOrCountry) {
+                    if (controller.userLocationInput.postcode) {
                         $('#user-location-error').hide();
                         controller.showInputDialog = false;
                         requestWeather(false);
@@ -44,14 +48,14 @@
             if (byGeoLocation) {
                 requestWeatherByGeoLocation(userLocation.coords.latitude,userLocation.coords.longitude, controller.systemOfUnits)
                     .then(onRequestSuccess, onRequestFail);
-            } else if (controller.postCodeOrCountry) {
-                requestWeatherByPostcodeOrCountry(controller.postCodeOrCountry)
+            } else if (controller.userLocationInput.country && controller.userLocationInput.postcode) {
+                requestWeatherByPostcode(controller.userLocationInput, controller.systemOfUnits)
                     .then(onRequestSuccess, onRequestFail);
             }
         }
 
-        function requestWeatherByPostcodeOrCountry(postcodeOrCountry) {
-            return OpenWeatherAPIService.requestWeatherByPostcodeOrCountry(postcodeOrCountry);
+        function requestWeatherByPostcode(userLocation, systemOfUnits) {
+            return OpenWeatherAPIService.requestWeatherByPostcode(userLocation, systemOfUnits);
         }
 
         function requestWeatherByGeoLocation(lat, lon, unit) {

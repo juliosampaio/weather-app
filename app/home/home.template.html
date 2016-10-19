@@ -55,7 +55,7 @@
                         <div class="row wa-weather-main-card-info">
                             <div class="col-md-4 wa-weather-info-item" title="Wind speed">
                                 <div class="item-icon"><i class="wi wi-strong-wind"></i></div>
-                                <div class="item-value">{{home.weatherData.wind.speed | round}}</div>
+                                <div class="item-value">{{home.weatherData.wind.speed | round}} {{(home.systemOfUnits === 'imperial') ? 'mph' : 'km/h'}}</div>
                                 <div class="item-description">Wind speed</div>
                             </div>
                             <div class="col-md-4 wa-weather-info-item" title="Atmospheric pressure on the sea level (hPa)">
@@ -100,11 +100,23 @@
         </div>
     </div>
 </div>
-<weather-app-modal modal-id="popup" title="Please, inform a postcode or country" show="home.showInputDialog" buttons="home.modalButtons">
+<weather-app-modal modal-id="popup" title="Please, inform a location" show="home.showInputDialog" buttons="home.modalButtons">
     <modal-body>
         <div class="form-group label-static">
-            <input id="user-location" data-ng-model="home.postCodeOrCountry" type="text" class="form-control" placeholder="Postcode or country">
-            <p id="user-location-error" class="help-block text-danger" data-ng-show="!home.postCodeOrCountry">Please, type a postcode or country</p>
+            <form>
+                <div class="form-group">
+                    <label for="country" class="control-label">Country</label>
+                    <select id="country" class="form-control"
+                        data-ng-options="country.name for country in home.countries track by country['country-code']"
+                            data-ng-model="home.userLocationInput.country">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="postcode" class="control-label">Postcode</label>
+                    <input id="postcode" data-ng-model="home.userLocationInput.postcode" type="text" class="form-control">
+                    <p id="user-location-error" class="help-block text-danger" data-ng-show="!home.userLocationInput.postcode">Please, type a postcode</p>
+                </div>
+            </form>
         </div>
     </modal-body>
 </weather-app-modal>
