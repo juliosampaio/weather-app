@@ -31,7 +31,9 @@
                     './app/widgets/widgets.module.js',
                     './app/widgets/modal/modal.directive.js',
                     './app/util/util.module.js',
-                    './app/util/util.service.js'
+                    './app/util/util.service.js',
+                    './app/flickr/flickr.module.js',
+                    './app/flickr/flickr.service.js'
                 ],
                 css: [
                     './app/assets/app.css'

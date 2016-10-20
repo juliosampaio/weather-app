@@ -5,6 +5,7 @@
         .config(OpenWeatherConfig);
 
     function OpenWeatherConfig($provide) {
+
         $provide.value('OPEN_WEATHER_CONFIG', {
             'BASE_URL': 'http://api.openweathermap.org/data/',
             'VERSION': 2.5,

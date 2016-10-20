@@ -5,6 +5,7 @@
         .factory('OpenWeatherAPIService', OpenWeatherAPIService);
 
     function OpenWeatherAPIService($q, $http, OPEN_WEATHER_CONFIG) {
+
         var service = {
             requestWeatherByGeoLocation: requestWeatherByGeoLocation,
             requestWeatherByPostcode: requestWeatherByPostcode

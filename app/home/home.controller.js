@@ -4,7 +4,7 @@
         .module('weather-app.home')
         .controller('Home', Home);
     
-    function Home($scope, userLocation, OpenWeatherAPIService, APPCONFIG, countries) {
+    function Home($scope, userLocation, OpenWeatherAPIService, APPCONFIG, countries, FlickrAPIService) {
         var controller = this;
         controller.userLocation = userLocation;
         controller.showInputDialog = (userLocation == null);
@@ -17,8 +17,12 @@
         controller.countries = countries;
         controller.userLocationInput = {country: {"name":"United Kingdom of Great Britain and Northern Ireland","alpha-2":"GB","country-code":"826"}, postcode: null};
         controller.modalButtons = getModalButtons();
+        controller.photoURL = '';
 
-        $scope.$watch('home.systemOfUnits', function (system) {
+        $scope.$watch('home.systemOfUnits', function (system, old) {
+            if (old === system) {
+                return;
+            }
             var byGeoLocation = controller.userLocation != null;
             controller.degreeUnit = (system === 'imperial') ? 'F' : 'C';
             requestWeather(byGeoLocation);
@@ -63,6 +67,10 @@
         }
 
         function onRequestSuccess(result) {
+            var tags = [].concat(result.data.name).concat(result.data.weather[0].description.split(' '));
+            FlickrAPIService.searchRandomPhotoByTags(tags).then(function(photoURL){
+                controller.photoURL = photoURL;
+            });
             controller.weatherData = result.data;
         }
 

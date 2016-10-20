@@ -57,3 +57,14 @@ body {
     color: #ACC4EB;
     width: 100%;
 }
+.wa-location-pic {
+    height: 482px;
+    text-align: center;
+}
+.wa-location-pic img {
+    max-height: 410px;
+}
+.wa-location-pic p {
+    margin-top: 15px;
+    text-align: center;
+}

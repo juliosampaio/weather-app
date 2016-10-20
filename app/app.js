@@ -6,7 +6,8 @@
         'weather-app.location',
         'weather-app.openweather',
         'weather-app.widgets',
-        'weather-app.util'
+        'weather-app.util',
+        'weather-app.flickr'
     ])
     .filter('round', function () {
         return function (value) {
