@@ -14,6 +14,9 @@
 
             var url = 'https://farm{farm}.staticflickr.com/{server}/{id}_{secret}_b.jpg';
             var photo = flickrPhotos.photo[Math.floor(Math.random()*flickrPhotos.photo.length)];
+            if (!photo) {
+                return '';
+            }
             return url
                 .replace('{farm}',photo.farm)
                 .replace('{server}',photo.server)

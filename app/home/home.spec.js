@@ -19,6 +19,7 @@ describe('Home Module', function () {
     beforeEach(angular.mock.module('weather-app.home'));
     beforeEach(angular.mock.module('weather-app.openweather'));
     beforeEach(angular.mock.module('weather-app.util'));
+    beforeEach(angular.mock.module('weather-app.flickr'));
 
     beforeEach(inject(function (_$controller_, _$state_, _$rootScope_,  _$injector_, _$q_, _$httpBackend_, _LocationService_, _OpenWeatherAPIService_) {
         $state = _$state_;
@@ -78,7 +79,7 @@ describe('Home Module', function () {
     describe('Home Controller when user allows to share location', function () {
 
         var HomeController, userLocation = null;
-        var FAKE_RESPONSE = {coord: -38.56, lat: -3.79, main: {temp: 299.914}};
+        var FAKE_RESPONSE = {coord: -38.56, lat: -3.79, main: {temp: 299.914}, weather:[{description: 'Fake Description'}]};
         var API_KEY = '86233891fdf9169b3a4594d92b375ea1';
 
         beforeEach(function () {
@@ -96,6 +97,8 @@ describe('Home Module', function () {
         it('should fetch the weather for userLocation', function () {
             var url = 'http://api.openweathermap.org/data/2.5/weather?lat=-3.8105504&lon=-38.5947928&units=imperial&apikey='+API_KEY;
             $httpBackend.whenGET(url).respond(200, FAKE_RESPONSE);
+            var url2 = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=7e1aca26dbc0600a45cd08d90f6884b8&tags=,Fake,Description&format=json&nojsoncallback=1';
+            $httpBackend.whenGET(url2).respond(200, {photos: {photo:[]}});
             $httpBackend.flush();
             expect(HomeController.userLocation).toEqual(userLocation);
             expect(OpenWeatherAPIService.requestWeatherByGeoLocation)

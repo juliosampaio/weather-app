@@ -27,6 +27,8 @@ module.exports = function(config) {
         './app/openweather/openweather.service.js',
         './app/util/util.module.js',
         './app/util/util.service.js',
+        './app/flickr/flickr.module.js',
+        './app/flickr/flickr.service.js',
         './app/**/*.spec.js',
         './tests-mocks/geolocation.js'
     ],
